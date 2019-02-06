@@ -20,8 +20,7 @@ int string_matching_kmp(char *text, int N, char* pattern, int M, int type){
 			
 				i --;
 				continue;
-			}
-			
+			}	
 		}else{
 			if (j == M - 1){
 				count ++;
@@ -32,10 +31,6 @@ int string_matching_kmp(char *text, int N, char* pattern, int M, int type){
 			}
 		}
 	}
-
-	
-
-
 	free(overlap_list);
 	if (type == 1){
 		value = count;
