@@ -17,7 +17,6 @@ int string_matching_kmp(char *text, int N, char* pattern, int M, int type){
 		if(text[i] != pattern[j]){
 			if(j != 0){
 				j = overlap_list[j - 1];
-			
 				i --;
 				continue;
 			}	
