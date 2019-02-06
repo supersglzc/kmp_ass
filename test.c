@@ -12,11 +12,40 @@ void print_array(int *arr, int size){
 
 void short_test (char *text, int N, char * pattern, int M){
 	printf("text='%s', pattern='%s'\n", text, pattern);
-	int result1 = string_matching_naive(text, N, pattern, M);
-	int result2 = string_matching_kmp(text, N, pattern, M);
+	int result1 = string_matching_naive(text, N, pattern, M, 1);
+	int result2 = string_matching_kmp(text, N, pattern, M, 1);
 	printf("Number of occurrences: result1=%d, result2=%d\n", result1, result2);
 }
+void performance_test(){
+	static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	printf("You are getting into performance test!\n");
+	for (int k = 0; k < 10; k ++){
+		int n = rand() % (1000000 - 10000) + 10000; //generate an integer from 10000 to 1000000
+		int m = 400;
+	
+		char * text =  malloc(n);
+		for (int i = 0; i < n; i ++){
+			int pos = rand() % (int)(sizeof(charset) - 1);
+			text[i] = charset[pos];
+		}
 
+		char * pattern = malloc(m);
+		for (int j = 0; j < m; j ++){
+			int pos = rand() % (int)(sizeof(charset) - 1);
+			pattern[j] = charset[pos];
+		}
+	
+		int times1 = string_matching_naive(text, n, pattern, m, 2);
+		int times2 = string_matching_kmp(text, n, pattern, m, 2);
+		printf("The length of text is %d\n", n);
+		printf("The length of pattern is %d\n", m);
+		printf("The naive algorithm runs %d times\n", times1);
+		printf("The kmp algorithm runs %d times\n\n", times2);
+	
+		free(text);
+		free(pattern);
+	}
+}
 void stress_test(int N, int M){
   static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   srand(time(NULL));   // Initialization, should only be called once.
@@ -39,8 +68,8 @@ void stress_test(int N, int M){
     
     printf("text='%s', pattern='%s'\n", text, pattern);
 	
-    int result1 = string_matching_naive(text, n, pattern, m);
-    int result2 = string_matching_kmp(text, n, pattern, m);
+    int result1 = string_matching_naive(text, n, pattern, m, 1);
+    int result2 = string_matching_kmp(text, n, pattern, m, 1);
     
     if (result1==result2)
       printf("OK\n");
@@ -54,8 +83,8 @@ void stress_test(int N, int M){
 }
 
 int main(int argc, char **argv ){
-  if (argc < 4){
-    printf("To run: test <1> <text> <N> <pattern> <M>\n or test <2> <N> <M>\n");
+  if ((argc < 4) && (argc != 2)){
+    printf("To run: test <1> <text> <N> <pattern> <M>\n or test <2> <N> <M>\n or test <3>\n");
     return 0;
    }
    
@@ -74,7 +103,10 @@ int main(int argc, char **argv ){
 	   short_test(text, N, pattern, M);
 	   return 0;
    }
-   
+   if (mode == 3){
+	performance_test();
+	return 0;	
+   }	
    int N = atoi(argv[2]);
    int M = atoi(argv[3]);
    
