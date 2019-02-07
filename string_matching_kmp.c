@@ -1,18 +1,13 @@
 #include "string_matching.h"
 
-int string_matching_kmp(char *text, int N, char* pattern, int M, int type){
+int string_matching_kmp(char *text, int N, char* pattern, int M){
 	int count = 0;
-	int times = 0;
-	int value = 0;
 	int *overlap_list = overlap_array(pattern, M);
-	if (type == 1){
-		printf("overlap function: ");
-		print_array(overlap_list,M);
-	}
+	//printf("overlap function: ");
+	//print_array(overlap_list,M);
 	//TODO - implement kmp search
 	int j = 0;
 	for(int i = 0; i < N; i ++){
-		times ++;
 		//printf("%d\n", times);
 		if(text[i] != pattern[j]){
 			if(j != 0){
@@ -31,12 +26,7 @@ int string_matching_kmp(char *text, int N, char* pattern, int M, int type){
 		}
 	}
 	free(overlap_list);
-	if (type == 1){
-		value = count;
-	}else{
-		value = times;
-	}
-	return value;
+	return count;
 }
 
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include "string_matching.h"
 
 void print_array(int *arr, int size){
@@ -12,11 +13,14 @@ void print_array(int *arr, int size){
 
 void short_test (char *text, int N, char * pattern, int M){
 	printf("text='%s', pattern='%s'\n", text, pattern);
-	int result1 = string_matching_naive(text, N, pattern, M, 1);
-	int result2 = string_matching_kmp(text, N, pattern, M, 1);
+	int result1 = string_matching_naive(text, N, pattern, M);
+	int result2 = string_matching_kmp(text, N, pattern, M);
 	printf("Number of occurrences: result1=%d, result2=%d\n", result1, result2);
 }
 void performance_test(){
+	struct timeval tv1, tv2, tv3, tv4;
+	double time1, time2;
+
 	static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	printf("You are getting into performance test!\n");
 	for (int k = 0; k < 10; k ++){
@@ -34,17 +38,25 @@ void performance_test(){
 			int pos = rand() % (int)(sizeof(charset) - 1);
 			pattern[j] = charset[pos];
 		}
-	
-		int times1 = string_matching_naive(text, n, pattern, m, 2);
-		int times2 = string_matching_kmp(text, n, pattern, m, 2);
+		gettimeofday(&tv1, NULL);		
+		string_matching_naive(text, n, pattern, m);
+		gettimeofday(&tv2, NULL);
+		time1 = ((double)(tv2.tv_usec - tv1.tv_usec)) / 1000000 + ((double)(tv2.tv_sec - tv1.tv_sec));
+
+		gettimeofday(&tv3, NULL);
+		string_matching_kmp(text, n, pattern, m);
+		gettimeofday(&tv4, NULL);
+		time2 = ((double)(tv4.tv_usec - tv3.tv_usec)) / 1000000 + ((double)(tv4.tv_sec - tv3.tv_sec));
 		printf("The length of text is %d\n", n);
 		printf("The length of pattern is %d\n", m);
-		printf("The naive algorithm runs %d times\n", times1);
-		printf("The kmp algorithm runs %d times\n\n", times2);
+		printf("The naive algorithm runs %f times\n", time1);
+		printf("The kmp algorithm runs %f times\n\n", time2);
 	
 		free(text);
 		free(pattern);
+
 	}
+	
 }
 void stress_test(int N, int M){
   static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -68,8 +80,8 @@ void stress_test(int N, int M){
     
     printf("text='%s', pattern='%s'\n", text, pattern);
 	
-    int result1 = string_matching_naive(text, n, pattern, m, 1);
-    int result2 = string_matching_kmp(text, n, pattern, m, 1);
+    int result1 = string_matching_naive(text, n, pattern, m);
+    int result2 = string_matching_kmp(text, n, pattern, m);
     
     if (result1==result2)
       printf("OK\n");

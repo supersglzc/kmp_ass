@@ -5,8 +5,8 @@
 #include <time.h>
 #include <stdlib.h>
 
-int string_matching_naive(char *text, int N, char* pattern, int M, int type);
-int string_matching_kmp(char *text, int N, char* pattern, int M, int type);
+int string_matching_naive(char *text, int N, char* pattern, int M);
+int string_matching_kmp(char *text, int N, char* pattern, int M);
 
 int * overlap_array(char* pattern, int M);
 void print_array(int *arr, int size);
