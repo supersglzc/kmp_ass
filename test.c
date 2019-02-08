@@ -32,12 +32,13 @@ void performance_test(){
 			int pos = rand() % (int)(sizeof(charset) - 1);
 			text[i] = charset[pos];
 		}
-
+		text += '\0';
 		char * pattern = malloc(m);
 		for (int j = 0; j < m; j ++){
 			int pos = rand() % (int)(sizeof(charset) - 1);
 			pattern[j] = charset[pos];
 		}
+		pattern += '\0';
 		gettimeofday(&tv1, NULL);		
 		string_matching_naive(text, n, pattern, m);
 		gettimeofday(&tv2, NULL);
@@ -77,7 +78,8 @@ void stress_test(int N, int M){
 	  int pos = rand() % (int)(sizeof(charset) -1);
       pattern[i] = charset[pos];      
     }
-    
+    text += '\0';
+    pattern += '\0';
     printf("text='%s', pattern='%s'\n", text, pattern);
 	
     int result1 = string_matching_naive(text, n, pattern, m);
