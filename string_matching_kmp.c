@@ -7,21 +7,29 @@ int string_matching_kmp(char *text, int N, char* pattern, int M){
 	//print_array(overlap_list,M);
 	//TODO - implement kmp search
 	int j = 0;
-	for(int i = 0; i < N; i ++){
-		//printf("%d\n", times);
-		if(text[i] != pattern[j]){
-			if(j != 0){
-				j = overlap_list[j - 1];
-				i --;
-				continue;
-			}	
-		}else{
-			if (j == M - 1){
+	if(M == 1){
+		for(int i = 0; i < N; i ++){
+			if(text[i] == pattern[0]){
 				count ++;
-				i -= overlap_list[j - 1] + 1;
-				j = 0;
+			}
+		}
+	}else{
+		for(int i = 0; i < N; i ++){
+			//printf("%d\n", times);
+			if(text[i] != pattern[j]){
+				if(j != 0){
+					j = overlap_list[j - 1];
+					i --;
+					continue;
+				}	
 			}else{
-				j ++;
+				if (j == M - 1){
+					count ++;
+					i -= overlap_list[j - 1] + 1;
+					j = 0;
+				}else{
+					j ++;
+				}
 			}
 		}
 	}

@@ -2,23 +2,20 @@
 
 int string_matching_naive(char *text, int N, char* pattern, int M){
 	int occurence = 0;
-	int match = 1;
 	for (int i = 0; i < N; i ++){
-		match = 1;
 		for (int j = 0; j < M; j ++){
 			//printf("%d %d\n", i, j);
 			//printf("%d\n", times);
-			if (text[i + j] != pattern[j]){
-				match = 2;
-				break;
+			if (text[i + j] == pattern[j]){
+				if(j == M - 1){
+					occurence ++;
+				}
 			}else{
-				match = 1;
+				break;
 			}
 
 		}
-		if (match == 1){
-			occurence ++;
-		}
+	
 	}
 
 	return occurence;

@@ -23,8 +23,8 @@ void performance_test(){
 
 	static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	printf("You are getting into performance test!\n");
-	for (int k = 0; k < 10; k ++){
-		int n = rand() % (1000000 - 10000) + 10000; //generate an integer from 10000 to 1000000
+	for (int n = 10000; n <= 1000000; n += 50000){
+	
 		int m = 400;
 	
 		char * text =  malloc(n);
@@ -70,18 +70,16 @@ void stress_test(int N, int M){
 	char *text = malloc(n);
     for (int i=0; i<n; i++){
 	  int pos = rand() % (int)(sizeof(charset) -1);
-      text[i] = charset[pos];      
-    }
-	
+      text[i] = charset[pos];
+    }	
+   text[n] = '\0';	
 	char *pattern = malloc(m);
     for (int i=0; i<m; i++){
 	  int pos = rand() % (int)(sizeof(charset) -1);
-      pattern[i] = charset[pos];      
+      pattern[i] = charset[pos];  
     }
-    text += '\0';
-    pattern += '\0';
+    pattern[m] = '\0';
     printf("text='%s', pattern='%s'\n", text, pattern);
-	
     int result1 = string_matching_naive(text, n, pattern, m);
     int result2 = string_matching_kmp(text, n, pattern, m);
     
